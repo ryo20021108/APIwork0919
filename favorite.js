@@ -23,7 +23,7 @@ function renderMovieList(data) {
             </div>
             <div class="card-footer">
               <button class="btn btn-primary btn-show-movie" data-bs-toggle="modal" data-bs-target="#movie-modal" data-id="${item.id}" > More </button>
-              <button class="btn btn-info btn-add-favorite" data-id="${item.id}">+</button>
+              <button class="btn btn-danger btn-remove-favorite" data-id="${item.id}">X</button>
             </div>
           </div>
         </div>
@@ -50,12 +50,19 @@ function showMovieModal(id) {
 
 }
 
+function removeFavoriteMovie(id) {
+  const movieIndex = movies.findIndex((movie) => movie.id === id)
+  movies.splice(movieIndex, 1)
+  localStorage.setItem('favoriteMovies', JSON.stringify(movies))
+  renderMovieList(movies)
+}
+
 dataPanel.addEventListener('click', function onPanelClicked(event) {
   let target = event.target
   if (target.matches('.btn-show-movie')) {
     showMovieModal(Number(target.dataset.id))
-  } else if (target.matches('.btn-add-favorite')) {
-    addToFavorite(Number(target.dataset.id))
+  } else if (target.matches('.btn-remove-favorite')) {
+    removeFavoriteMovie(Number(target.dataset.id))
   }
 })
 
