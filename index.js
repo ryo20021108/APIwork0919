@@ -3,7 +3,27 @@ const INDEX_URL = BASE_URL + '/api/movies/'
 const POSTER_URL = BASE_URL + '/posters/'
 const movies = []
 
+
+const searchForm = document.querySelector('#search-form')
+const searchInput = document.querySelector('#search-input')
 const dataPanel = document.querySelector('#data-panel')
+
+searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
+  event.preventDefault()
+  const keyword = searchInput.value.trim().toLowerCase()
+  let filteredMovies = []
+  // if (!keyword.length) {
+  //   return alert('請輸入有效字串！')
+  // }
+  filteredMovies = movies.filter((movie) =>
+    movie.title.toLowerCase().includes(keyword)
+  )
+  //錯誤處理：無符合條件的結果
+  if (filteredMovies.length === 0) {
+    return alert(`您輸入的關鍵字：${keyword} 沒有符合條件的電影`)
+  }
+  renderMovieList(filteredMovies)
+})
 
 function renderMovieList(data) {
   let rawHTML = ''
