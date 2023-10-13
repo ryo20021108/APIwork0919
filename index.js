@@ -120,6 +120,3 @@ axios.get(INDEX_URL)
     renderMovieList(getMoviesByPage(1))
   })
   .catch((err) => console.log(err))
-
-
-//testt12331
