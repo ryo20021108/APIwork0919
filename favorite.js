@@ -1,26 +1,13 @@
 const BASE_URL = 'https://webdev.alphacamp.io'
 const INDEX_URL = BASE_URL + '/api/movies/'
 const POSTER_URL = BASE_URL + '/posters/'
-const movies = []
+const movies = JSON.parse(localStorage.getItem('favoriteMovies'))
 
 
 const searchForm = document.querySelector('#search-form')
 const searchInput = document.querySelector('#search-input')
 const dataPanel = document.querySelector('#data-panel')
 
-searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
-  event.preventDefault()
-  const keyword = searchInput.value.trim().toLowerCase()
-  let filteredMovies = []
-
-  filteredMovies = movies.filter((movie) =>
-    movie.title.toLowerCase().includes(keyword)
-  )
-  if (filteredMovies.length === 0) {
-    return alert(`您輸入的關鍵字：${keyword} 沒有符合條件的電影`)
-  }
-  renderMovieList(filteredMovies)
-})
 
 function renderMovieList(data) {
   let rawHTML = ''
@@ -64,16 +51,6 @@ function showMovieModal(id) {
 
 }
 
-function addToFavorite(id) {
-  const list = JSON.parse(localStorage.getItem('favoriteMovies')) || []
-  const movie = movies.find((movie) => movie.id === id)
-  if (list.some((movie) => movie.id === id)) {
-    return alert('已加入收藏')
-  }
-  list.push(movie)
-  localStorage.setItem('favoriteMovies', JSON.stringify(list))
-}
-
 dataPanel.addEventListener('click', function onPanelClicked(event) {
   let target = event.target
   if (target.matches('.btn-show-movie')) {
@@ -83,13 +60,4 @@ dataPanel.addEventListener('click', function onPanelClicked(event) {
   }
 })
 
-axios.get(INDEX_URL)
-  .then((response) => {
-    movies.push(...response.data.results)
-    console.log(movies)
-    renderMovieList(movies)
-  })
-  .catch((err) => console.log(err))
-
-
-//testt12331
+renderMovieList(movies)
