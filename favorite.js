@@ -1,8 +1,7 @@
 const BASE_URL = 'https://webdev.alphacamp.io'
 const INDEX_URL = BASE_URL + '/api/movies/'
 const POSTER_URL = BASE_URL + '/posters/'
-const movies = JSON.parse(localStorage.getItem('favoriteMovies'))
-
+const movies = JSON.parse(localStorage.getItem('favoriteMovies')) || []
 
 const searchForm = document.querySelector('#search-form')
 const searchInput = document.querySelector('#search-input')
