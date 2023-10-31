@@ -3,6 +3,7 @@ const INDEX_URL = BASE_URL + '/api/movies/'
 const POSTER_URL = BASE_URL + '/posters/'
 const MOVIES_PER_PAGE = 12
 const movies = []
+let filteredMovies = []
 
 
 const searchForm = document.querySelector('#search-form')
@@ -24,7 +25,6 @@ paginator.addEventListener('click', function onPaginatorClicked(event) {
 searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
   event.preventDefault()
   const keyword = searchInput.value.trim().toLowerCase()
-  let filteredMovies = []
 
   filteredMovies = movies.filter((movie) =>
     movie.title.toLowerCase().includes(keyword)
@@ -32,7 +32,8 @@ searchForm.addEventListener('submit', function onSearchFormSubmitted(event) {
   if (filteredMovies.length === 0) {
     return alert(`您輸入的關鍵字：${keyword} 沒有符合條件的電影`)
   }
-  renderMovieList(filteredMovies)
+  renderPaginator(filteredMovies.length)
+  renderMovieList(getMoviesByPage(1))
 })
 
 function renderPaginator(amount) {
@@ -47,8 +48,9 @@ function renderPaginator(amount) {
 }
 
 function getMoviesByPage(page) {
+  const data = filteredMovies.length ? filteredMovies : movies
   const startIndex = (page - 1) * MOVIES_PER_PAGE
-  return movies.slice(startIndex, startIndex + MOVIES_PER_PAGE)
+  return data.slice(startIndex, startIndex + MOVIES_PER_PAGE)
 }
 
 function renderMovieList(data) {
